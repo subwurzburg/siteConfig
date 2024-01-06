@@ -1,0 +1,15 @@
+{
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "shelljs": "^0.8.4",
+    "uglify-es": "^3.3.9",
+    "xlsx": "^0.18.5"
+  }
+}

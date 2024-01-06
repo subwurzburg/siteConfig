@@ -1,0 +1,7 @@
+.qiniu_pythonsdk_hostscache.json
+.idea
+package-lock.json
+node_modules
+dist/.DS_Store
+.DS_Store
+.vscode
