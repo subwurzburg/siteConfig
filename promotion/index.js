@@ -128,7 +128,6 @@ bot.onText(/替换/, async (msg) => {
   await bot.sendMessage(chatId, '編輯完成');
 })
 
-// const updateJsVer = require('./jsVer.js');
 const { changePicName } = require('./fileSplitter');
 const { addConfig, editConfig, xlsxReader } = require('./siteConfigHandler');
 const { compress, uncompress } = require('./compressFile');

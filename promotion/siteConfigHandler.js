@@ -55,7 +55,7 @@ async function addConfig(brandName, android = "", ios = "") {
     .replace(new RegExp(`"folderName"`, 'g'), 'folderName')
     .replace(new RegExp(`"group"`, 'g'), 'group')
     };\n`;
-  fs.writeFileSync('./siteConfig.js', updatedContent, 'utf-8');
+  fs.writeFileSync('../siteConfig.js', updatedContent, 'utf-8');
   xlsxBuild();
 }
 function PYingArray(inputArray) {
@@ -97,6 +97,6 @@ async function editConfig(brandName, android = "", ios = "") {
     .replace(new RegExp(`"folderName"`, 'g'), 'folderName')
     .replace(new RegExp(`"group"`, 'g'), 'group')
     };\n`;
-  fs.writeFileSync('./siteConfig.js', updatedContent, 'utf-8');
+  fs.writeFileSync('../siteConfig.js', updatedContent, 'utf-8');
 }
 module.exports = { addConfig, editConfig };
