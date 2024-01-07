@@ -9,6 +9,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
     "shelljs": "^0.8.4",
+    "simple-git": "^3.22.0",
     "uglify-es": "^3.3.9",
     "xlsx": "^0.18.5"
   }

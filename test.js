@@ -1,31 +1,28 @@
-const { exec } = require('child_process');
+const simpleGit = require('simple-git');
 
-// 要执行的 Git 命令
-const gitCommands = [
-  'git add .',
-  'git commit -m "test"',
-  'git push'
-];
+// 指定 Git 仓库的路径
+const repoPath = './';
 
-// 依次执行 Git 命令
-gitCommands.forEach((command) => {
-  const gitProcess = exec(command);
+// 创建 simple-git 对象
+const git = simpleGit(repoPath);
 
-  // 监听子进程的标准输出和标准错误
-  gitProcess.stdout.on('data', (data) => {
-    console.log(`Git 命令输出:\n${data}`);
+// 执行 Git add 操作
+git.add('.')
+  .then(() => {
+    console.log('Git add 成功。');
+
+    // 执行 Git commit 操作
+    return git.commit('test: commit message');
+  })
+  .then(() => {
+    console.log('Git commit 成功。');
+
+    // 执行 Git push 操作
+    return git.push('origin', 'main');
+  })
+  .then(() => {
+    console.log('Git push 成功。');
+  })
+  .catch((err) => {
+    console.error(`Git 操作失败：${err}`);
   });
-
-  gitProcess.stderr.on('data', (data) => {
-    console.error(`Git 命令返回错误信息: ${data}`);
-  });
-
-  // 监听子进程的关闭事件
-  gitProcess.on('close', (code) => {
-    if (code === 0) {
-      console.log('Git 命令执行成功。');
-    } else {
-      console.error(`Git 命令执行失败，退出码: ${code}`);
-    }
-  });
-});
