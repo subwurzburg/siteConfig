@@ -99,4 +99,4 @@ async function editConfig(brandName, android = "", ios = "") {
     };\n`;
   fs.writeFileSync('../siteConfig.js', updatedContent, 'utf-8');
 }
-module.exports = { addConfig, editConfig };
+module.exports = { addConfig, editConfig, PYingArray };

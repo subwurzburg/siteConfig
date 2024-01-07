@@ -1,5 +1,6 @@
 const xlsx = require('xlsx');
 const siteConfig = require('../siteConfig');
+const fsExtra = require('fs-extra');
 
 function xlsxBuild() {
   let siteConfigArr = []
@@ -26,4 +27,13 @@ function getCurrentDate() {
   return year + month + day;
 }
 
-module.exports = { xlsxBuild, getCurrentDate }
+function moveFolderfile(from, to) {
+  fsExtra.moveSync(from, to, { overwrite: true }, (err) => {
+    if (err) {
+      console.error(`移动文件夹时出错：${err}`);
+    } else {
+      console.log('文件夹内容移动成功。');
+    }
+  });
+}
+module.exports = { xlsxBuild, getCurrentDate, moveFolderfile }

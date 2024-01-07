@@ -13,6 +13,8 @@ const bot = new TGbot(token, {
   }
 });
 
+const { moveFolderfile } = require("./utils")
+
 function ExcelReader() {
   // 指定Excel檔案的路徑
   const excelFilePath = './all.xlsx';
@@ -58,7 +60,6 @@ const fileNames = [
 
 // 修改單一圖片
 bot.on('document', async (msg) => {
-  console.log(msg.document);
   const caption = msg.caption; // 獲取用戶發送的文字
   const regex = /修改/;
   if (regex.test(caption)) {
@@ -67,12 +68,11 @@ bot.on('document', async (msg) => {
     const brandNameMatch = brandNameRegex.exec(caption)[1];
     const ExcelData = ExcelReader()
     ExcelData.forEach(item => {
-      item["folderName"] = item["folderName"].trim();
+      item["folderName"] = item["folderName"]
     })
     let target;
     target = ExcelData.find(item => item.name === brandNameMatch);
     fileId = msg.document.file_id;
-    console.log(msg.document);
 
     try {
       const fileData = await bot.getFile(fileId);
@@ -91,20 +91,49 @@ bot.on('document', async (msg) => {
   }
 })
 
-bot.onText(/建置/, async (msg) => {
-  const messageText = msg.text;
-  // brandName
-  const brandNameRegex = /包网(.*?)棋牌/g;
-  const brandNameMatch = brandNameRegex.exec(messageText)[1];
-  // androidUrl
-  const androidRegex = /安卓：(.*?)\n/g;
-  const androidMatch = androidRegex.exec(messageText)[1];
-  // iosUrl
-  const iosRegex = /IOS：(.*?)$/gi;
-  const iosMatch = iosRegex.exec(messageText)[1];
-  console.log(brandNameMatch);
-  await addConfig(brandNameMatch, androidMatch, iosMatch)
-  await bot.sendMessage(chatId, '新增完成');
+// bot.onText(/建置/, async (msg) => {
+//   const messageText = msg.text;
+//   // brandName
+//   const brandNameRegex = /包网(.*?)棋牌/g;
+//   const brandNameMatch = brandNameRegex.exec(messageText)[1];
+//   // androidUrl
+//   const androidRegex = /安卓：(.*?)\n/g;
+//   const androidMatch = androidRegex.exec(messageText)[1];
+//   // iosUrl
+//   const iosRegex = /IOS：(.*?)$/gi;
+//   const iosMatch = iosRegex.exec(messageText)[1];
+//   console.log(brandNameMatch);
+//   await addConfig(brandNameMatch, androidMatch, iosMatch)
+//   await bot.sendMessage(chatId, '新增完成');
+// })
+
+bot.on('document', async (msg) => {
+  const messageText = msg.caption;
+  const regex = /建置/;
+  if (regex.test(messageText)) {
+    // brandName
+    const brandNameRegex = /包网(.*?)棋牌/g;
+    const brandNameMatch = brandNameRegex.exec(messageText)[1];
+    // androidUrl
+    const androidRegex = /安卓：(.*?)\n/g;
+    const androidMatch = androidRegex.exec(messageText)[1];
+    // iosUrl
+    const iosRegex = /IOS：(.*?)$/gi;
+    const iosMatch = iosRegex.exec(messageText)[1];
+    console.log(brandNameMatch);
+    await addConfig(brandNameMatch, androidMatch, iosMatch);
+
+    const fileData = await bot.getFile(fileId);
+    await bot.sendMessage(chatId, '----新增：收到圖片----');
+    // 將處理檔案的函數推入佇列
+    fileQueue.push(() => processFile(fileData, target));
+    // 檢查是否有其他檔案在處理中，如果沒有，開始處理佇列
+    if (fileQueue.length === 1) {
+      await processQueue();
+    }
+
+    await bot.sendMessage(chatId, '新增完成');
+  }
 })
 
 bot.onText(/替换/, async (msg) => {
@@ -117,7 +146,7 @@ bot.onText(/替换/, async (msg) => {
   const androidRegex = /安卓：(.*?)\.apk/g;
   const androidMatch = androidRegex.exec(messageText)
   let androidUrl = androidMatch ? androidMatch[1] : "";
-  if(androidUrl !== "") androidMatch = androidMatch + ".apk"
+  if (androidUrl !== "") androidMatch = androidMatch + ".apk"
   console.log(androidUrl)
   // iosUrl
   const iosRegex = /IOS：(.*?)$/gi;
@@ -129,9 +158,10 @@ bot.onText(/替换/, async (msg) => {
 })
 
 const { changePicName } = require('./fileSplitter');
-const { addConfig, editConfig, xlsxReader } = require('./siteConfigHandler');
-const { compress, uncompress } = require('./compressFile');
+const { addConfig, editConfig, PYingArray } = require('./siteConfigHandler');
+const { uncompress } = require('./compressFile');
 const { findDirectoryWithFileName } = require('./findDirtory')
+
 
 async function processFile(fileData, target) {
   await bot.downloadFile(fileId, directoryPath);
@@ -139,14 +169,18 @@ async function processFile(fileData, target) {
   let path = await findDirectoryWithFileName(directoryPath, fileNames)
   path = `./${path}`
   await changePicName(path);
-  await compress(target, path);
-  await bot.sendDocument(chatId, `${target.name}.zip`, {
-    contentType: 'application/zip',
-  });
-  fs.unlink(`./${target.name}.zip`);
-  fs.rmdirSync(`./${target.folderName}`, { recursive: true });
+
+  let fullName = await PYingArray(target.name.split('')).join('')
+  console.log("fullName" + fullName)
+  let destinationPath = `../src/img/${fullName}`
+  fsExtra.ensureDirSync(destinationPath);
+  await clearAndRemoveDirectory(destinationPath)
+  console.log("創建完畢")
+  moveFolderfile(path, destinationPath)
   await clearAndRemoveDirectory('./picture')
 }
+
+
 
 async function processQueue() {
   if (fileQueue.length > 0) {
