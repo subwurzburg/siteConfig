@@ -925,7 +925,7 @@ module.exports = [
         DLName: "download_zhongyi",
         DLNameOl: "download_zhongyi_ol",
         DLAndroidUrl: "https://mubao-channel.chappystar.com/b1e8d59a74ed325b7944b81173b0f145.apk",
-        DLIOSUrl: "https://tren567.com/Yf0yL",
+        DLIOSUrl: "https://tren567.com/123123",
         folderName: "zy",
         group: "lowActive"
     },
