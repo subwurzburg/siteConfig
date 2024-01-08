@@ -4,6 +4,8 @@ const TGbot = require('node-telegram-bot-api')
 const token = '6935420858:AAHEvRScKx45vxy-UnfdCaXClBC9MRJymow' // lazy_bot
 const fs = require('fs');
 const fsExtra = require('fs-extra');
+const { pushFileToRep } = require("../git")
+
 
 const xlsx = require('xlsx');
 const bot = new TGbot(token, {
@@ -91,21 +93,6 @@ bot.on('document', async (msg) => {
   }
 })
 
-// bot.onText(/建置/, async (msg) => {
-//   const messageText = msg.text;
-//   // brandName
-//   const brandNameRegex = /包网(.*?)棋牌/g;
-//   const brandNameMatch = brandNameRegex.exec(messageText)[1];
-//   // androidUrl
-//   const androidRegex = /安卓：(.*?)\n/g;
-//   const androidMatch = androidRegex.exec(messageText)[1];
-//   // iosUrl
-//   const iosRegex = /IOS：(.*?)$/gi;
-//   const iosMatch = iosRegex.exec(messageText)[1];
-//   console.log(brandNameMatch);
-//   await addConfig(brandNameMatch, androidMatch, iosMatch)
-//   await bot.sendMessage(chatId, '新增完成');
-// })
 
 bot.on('document', async (msg) => {
   const messageText = msg.caption;
@@ -178,6 +165,7 @@ async function processFile(fileData, target) {
   console.log("創建完畢")
   moveFolderfile(path, destinationPath)
   await clearAndRemoveDirectory('./picture')
+  pushFileToRep('這是一個測試')
 }
 
 

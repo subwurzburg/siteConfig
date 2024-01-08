@@ -7,13 +7,13 @@ const repoPath = '../';
 const git = simpleGit(repoPath);
 
 // 执行 Git add 操作
-function pushFileToRep() {
+function pushFileToRep(msg) {
   git.add('.')
     .then(() => {
       console.log('Git add 成功。');
 
       // 执行 Git commit 操作
-      return git.commit('test: commit message');
+      return git.commit(msg);
     })
     .then(() => {
       console.log('Git commit 成功。');
