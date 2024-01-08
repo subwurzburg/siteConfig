@@ -13,4 +13,4 @@ function uncompress(dataName) {
     })
   })
 }
-module.exports = { compress, uncompress }
+module.exports = { uncompress }
