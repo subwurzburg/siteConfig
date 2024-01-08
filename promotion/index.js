@@ -134,8 +134,7 @@ bot.on('document', async (msg) => {
 bot.onText(/替换/, async (msg) => {
   const messageText = msg.text;
   // brandName
-  const brandNameRegex = /包网(.*?)棋牌/g;
-  const brandNameMatch = brandNameRegex.exec(messageText)[1];
+  const brandNameMatch = /包网(.*?)棋牌/g.exec(messageText)[1];
   console.log(brandNameMatch)
   // androidUrl
   const androidRegex = /安卓：(.*?)\.apk/g;
@@ -148,14 +147,22 @@ bot.onText(/替换/, async (msg) => {
   const iosMatch = iosRegex.exec(messageText);
   const iosUrl = iosMatch ? iosMatch[1] : ""
   console.log(iosUrl)
-  await editConfig(brandNameMatch, androidUrl, iosUrl)
-  await bot.sendMessage(chatId, '編輯完成');
+  try{
+    await editConfig(brandNameMatch, androidUrl, iosUrl)
+    let outPutMessage = `【${brandNameMatch}】 修改鏈結`
+    pushFileToRep(outPutMessage);
+    await bot.sendMessage(chatId, '編輯完成');
+  }
+  catch (err) {
+    console.log(err)
+  }
 })
 
 const { changePicName } = require('./fileSplitter');
 const { addConfig, editConfig, PYingArray } = require('./siteConfigHandler');
 const { uncompress } = require('./compressFile');
-const { findDirectoryWithFileName } = require('./findDirtory')
+const { findDirectoryWithFileName } = require('./findDirtory');
+const { cat } = require('shelljs');
 
 
 async function processFile(fileData, target, status) {
@@ -165,7 +172,6 @@ async function processFile(fileData, target, status) {
       editPicConf
     } 
   */
-
   await bot.downloadFile(fileId, directoryPath);
   await uncompress(fileData.file_path.split('/')[1], target);
   let path = await findDirectoryWithFileName(directoryPath, fileNames)
