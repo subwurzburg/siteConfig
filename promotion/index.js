@@ -17,6 +17,17 @@ const bot = new TGbot(token, {
 
 const { moveFolderfile } = require("./utils")
 
+function checkPictureFolder() {
+  const folderName = './picture';
+  if (!fs.existsSync(folderName)) {
+      // 如果不存在，則創建資料夾
+      fs.mkdirSync(folderName);
+      console.log(`成功創建資料夾: ${folderName}`);
+  } else {
+      console.log(`資料夾已存在: ${folderName}`);
+  }
+}
+
 function ExcelReader() {
   // 指定Excel檔案的路徑
   const excelFilePath = './all.xlsx';
@@ -75,7 +86,7 @@ bot.on('document', async (msg) => {
     let target;
     target = ExcelData.find(item => item.name === brandNameMatch);
     fileId = msg.document.file_id;
-
+    checkPictureFolder()
     try {
       const fileData = await bot.getFile(fileId);
       await bot.sendMessage(chatId, '已收到圖片！！圖片處理中....');
