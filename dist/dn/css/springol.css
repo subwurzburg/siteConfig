@@ -1,0 +1,94 @@
+ul,li,h1,h2,h3,h4,h5,h6,b,i{margin:0; padding:0; font-style:normal; font-weight:normal;}
+body{
+  padding:0;
+  max-width:640px;
+  margin:0 auto;
+  list-style: none;
+  font-family: "Arial","Microsoft YaHei";
+}
+
+
+.download img {
+  width: 100%;
+  display: block;
+}
+
+.wxtip {
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  display: none;
+}
+
+.wechattip-icon {
+  width: 100%;
+  height: 100%;
+  background: url('../img/wechat/wechat_bg.png') no-repeat;
+  background-size: 100% 100%;
+  display: block;
+}
+
+.bottom_img {
+  position: fixed;
+  bottom: 0;
+  max-width:640px;
+  z-index: 9999999;
+}
+
+.download {
+  position: relative;
+  left: 0;
+  top: 0;
+}
+
+.kefu {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 0;
+  right: 0;
+  z-index: 2000;
+}
+.download_div2 {
+  position: relative;
+}
+.download_div2 .download_img2{
+  height: 620px;
+}
+.download_div2 .banner2{
+  width: 100%;
+  text-align: center;
+  margin: 1rem auto !important;
+  position: absolute;
+  /*left: 10px;*/
+  top: 140px;
+  z-index: 999;
+}
+.banner2 .swiper-slide{
+  width: 52%;
+}
+
+.download_div3 {
+  position: relative;
+}
+.download_div3 .banner3{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 120px;
+}
+.banner3 .swiper-slide{
+  width: 50%;
+}
+.div2 {
+  width: 340px;
+  height: 180px;
+}
+.img2 {
+  width: 100%;
+}

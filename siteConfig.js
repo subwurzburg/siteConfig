@@ -1,4 +1,4 @@
-const jsVer = "3.0.236";
+const jsVer = "3.0.235";
 module.exports = [
     {
         guanwangHtmlModule: "module1",
@@ -925,7 +925,7 @@ module.exports = [
         DLName: "download_zhongyi",
         DLNameOl: "download_zhongyi_ol",
         DLAndroidUrl: "https://mubao-channel.chappystar.com/b1e8d59a74ed325b7944b81173b0f145.apk",
-        DLIOSUrl: "https://tren567.com/123123",
+        DLIOSUrl: "https://tren567.com/PAf4",
         folderName: "zy",
         group: "lowActive"
     },
@@ -1561,7 +1561,7 @@ module.exports = [
         jsModule: "module1",
         title: "光彩",
         siteName: "guangcai",
-        imgDate: "240108",
+        imgDate: "240102",
         jsVersion: jsVer,
         DLName: "download_guangcai",
         DLNameOl: "download_guangcai_ol",
@@ -1701,7 +1701,7 @@ module.exports = [
         jsModule: "module1",
         title: "凌志",
         siteName: "lingzhi",
-        imgDate: "240108",
+        imgDate: "240103",
         jsVersion: jsVer,
         DLName: "download_lingzhi",
         DLNameOl: "download_lingzhi_ol",
@@ -1722,19 +1722,5 @@ module.exports = [
         DLAndroidUrl: "https://mubao-channel.chappystar.com/78d66c753d0b8c24228f2a5dcc70af81.apk",
         DLIOSUrl: "https://tren567.com/8BKi",
         folderName: "pl"
-    },
-    {
-        guanwangHtmlModule: "module1",
-        mengcengHtmlModule: "module1",
-        jsModule: "module1",
-        title: "傻逼",
-        siteName: "shabi",
-        imgDate: "240108",
-        jsVersion: jsVer,
-        DLName: "download_shabi",
-        DLNameOl: "download_shabi_ol",
-        DLAndroidUrl: "https://mubao-channel.chappystar.com/dd74f335621354437837d96b352fb4e7.apk",
-        DLIOSUrl: "https://tren567.com/nrWU",
-        folderName: "sb"
     }
 ];
