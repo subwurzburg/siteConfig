@@ -73,88 +73,86 @@ const fileNames = [
 
 // 修改單一圖片
 bot.on('document', async (msg) => {
-  const caption = msg.caption; // 獲取用戶發送的文字
-  const regex = /修改/;
-  if (regex.test(caption)) {
-
-    const brandNameMatch = /包网(.*?)棋牌/g.exec(caption)[1];
-    const ExcelData = ExcelReader()
-    ExcelData.forEach(item => {
-      item["folderName"] = item["folderName"]
-    })
-    let target = ExcelData.find(item => item.name === brandNameMatch);
-    fileId = msg.document.file_id;
-    try {
+  try {
+    const caption = msg.caption; // 獲取用戶發送的文字
+    const regex = /修改/;
+    if (regex.test(caption)) {
+      const brandNameMatch = /包网(.*?)棋牌/g.exec(caption)[1];
+      const ExcelData = ExcelReader()
+      ExcelData.forEach(item => {
+        item["folderName"] = item["folderName"]
+      })
+      let target = ExcelData.find(item => item.name === brandNameMatch);
+      fileId = msg.document.file_id;
       checkPictureFolder()
       await editConfig(brandNameMatch, "", "", true)
 
       const fileData = await bot.getFile(fileId);
-      await bot.sendMessage(chatId, '已收到圖片！！圖片處理中....');
-      await bot.sendMessage(chatId, `folderName：${target.folderName}`);
+      await bot.sendMessage(chatId, '----- 編輯（圖片）：收到需求 -----');
       // 將處理檔案的函數推入佇列
       fileQueue.push(() => processFile(fileData, target, 2));
       // 檢查是否有其他檔案在處理中，如果沒有，開始處理佇列
       if (fileQueue.length === 1) {
         await processQueue();
       }
-    } catch (error) {
-      console.log('處理文件時出錯：', error);
-      await bot.sendMessage(chatId, '處理文件時出現錯誤，請稍後再試。');
+      await bot.sendMessage(chatId, '----- 已完成 -----');
     }
+  } catch(error) {
+    console.log(error);
   }
 })
 
 
 bot.on('document', async (msg) => {
-  const messageText = msg.caption;
-  const regex = /建置/;
-  if (regex.test(messageText)) {
-    // brandName
-    const brandNameMatch = /包网(.*?)棋牌/g.exec(messageText)[1];
-    // androidUrl
-    const androidMatch = /安卓：(.*?)\n/g.exec(messageText)[1];
-    // iosUrl
-    const iosMatch = /IOS：(.*?)$/gi.exec(messageText)[1];
-    console.log(brandNameMatch);
-    await addConfig(brandNameMatch, androidMatch, iosMatch);
+  try {
+    const messageText = msg.caption;
+    const regex = /建置/;
+    if (regex.test(messageText)) {
+      // brandName
+      const brandNameMatch = /包网(.*?)棋牌/g.exec(messageText)[1];
+      // androidUrl
+      const androidMatch = /安卓：(.*?)\n/g.exec(messageText)[1];
+      // iosUrl
+      const iosMatch = /IOS：(.*?)$/gi.exec(messageText)[1];
+      await addConfig(brandNameMatch, androidMatch, iosMatch);
 
-    const fileData = await bot.getFile(fileId);
-    await bot.sendMessage(chatId, '----新增：收到圖片----');
-    // 將處理檔案的函數推入佇列
-    fileQueue.push(() => processFile(fileData, target, 1));
-    // 檢查是否有其他檔案在處理中，如果沒有，開始處理佇列
-    if (fileQueue.length === 1) {
-      await processQueue();
+      const fileData = await bot.getFile(fileId);
+      await bot.sendMessage(chatId, '----- 新增：收到圖片 -----');
+      // 將處理檔案的函數推入佇列
+      fileQueue.push(() => processFile(fileData, target, 1));
+      // 檢查是否有其他檔案在處理中，如果沒有，開始處理佇列
+      if (fileQueue.length === 1) {
+        await processQueue();
+      }
+
+      await bot.sendMessage(chatId, '----- 已完成 -----');
     }
-
-    await bot.sendMessage(chatId, '新增完成');
+  } catch(error) {
+    console.log(error)
   }
 })
 
 bot.onText(/替换/, async (msg) => {
+  try {
   const messageText = msg.text;
+  await bot.sendMessage(chatId, '----- 編輯（鏈結）：收到需求 -----');
   // brandName
   const brandNameMatch = /包网(.*?)棋牌/g.exec(messageText)[1];
-  console.log(brandNameMatch)
   // androidUrl
   const androidRegex = /安卓：(.*?)\.apk/g;
   const androidMatch = androidRegex.exec(messageText)
   let androidUrl = androidMatch ? androidMatch[1] : "";
   if (androidUrl !== "") androidMatch = androidMatch + ".apk"
-  console.log(androidUrl)
   // iosUrl
   const iosRegex = /IOS：(.*?)$/gi;
   const iosMatch = iosRegex.exec(messageText);
   const iosUrl = iosMatch ? iosMatch[1] : ""
-  console.log(iosUrl)
-  try{
     await editConfig(brandNameMatch, androidUrl, iosUrl)
     let outPutMessage = `【${brandNameMatch}】 修改鏈結`
     pushFileToRep(outPutMessage);
-    await bot.sendMessage(chatId, '編輯完成');
-  }
-  catch (err) {
-    console.log(err)
+    await bot.sendMessage(chatId, '----- 已完成 -----');
+  } catch (error) {
+    console.log(error)
   }
 })
 

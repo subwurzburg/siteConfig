@@ -1561,7 +1561,7 @@ module.exports = [
         jsModule: "module1",
         title: "光彩",
         siteName: "guangcai",
-        imgDate: "240102",
+        imgDate: "240108",
         jsVersion: jsVer,
         DLName: "download_guangcai",
         DLNameOl: "download_guangcai_ol",
