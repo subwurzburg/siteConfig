@@ -1722,5 +1722,19 @@ module.exports = [
         DLAndroidUrl: "https://mubao-channel.chappystar.com/78d66c753d0b8c24228f2a5dcc70af81.apk",
         DLIOSUrl: "https://tren567.com/8BKi",
         folderName: "pl"
+    },
+    {
+        guanwangHtmlModule: "module1",
+        mengcengHtmlModule: "module1",
+        jsModule: "module1",
+        title: "傻逼",
+        siteName: "shabi",
+        imgDate: "240108",
+        jsVersion: jsVer,
+        DLName: "download_shabi",
+        DLNameOl: "download_shabi_ol",
+        DLAndroidUrl: "https://mubao-channel.chappystar.com/dd74f335621354437837d96b352fb4e7.apk",
+        DLIOSUrl: "https://tren567.com/nrWU",
+        folderName: "sb"
     }
 ];
