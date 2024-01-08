@@ -72,14 +72,17 @@ function PYingArray(inputArray) {
   }
 }
 
-async function editConfig(brandName, android = "", ios = "") {
+async function editConfig(brandName, android = "", ios = "", imgChange=false) {
   const jsVer = updateJsVer();
   const previousVersion = jsVer.replace(/\d+$/, match => parseInt(match) - 1);
   const matchConfig  = siteConfig.find(item=> item.title === brandName);
 
   matchConfig.DLAndroidUrl = android === "" ? matchConfig.DLAndroidUrl : android
   matchConfig.DLIOSUrl = ios === "" ? matchConfig.DLIOSUrl : ios
-
+  
+  if(imgChange) {
+    matchConfig.imgDate = getCurrentDate()
+  }
   const updatedContent = `const jsVer = "${jsVer}";\nmodule.exports = ${JSON.stringify(siteConfig, null, 4)
     .replace(new RegExp(`"${jsVer}"`, 'g'), 'jsVer')
     .replace(new RegExp(`"${previousVersion}"`, 'g'), 'jsVer')

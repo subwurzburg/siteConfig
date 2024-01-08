@@ -77,22 +77,22 @@ bot.on('document', async (msg) => {
   const regex = /修改/;
   if (regex.test(caption)) {
 
-    const brandNameRegex = /包网(.*?)棋牌/g;
-    const brandNameMatch = brandNameRegex.exec(caption)[1];
+    const brandNameMatch = /包网(.*?)棋牌/g.exec(caption)[1];
     const ExcelData = ExcelReader()
     ExcelData.forEach(item => {
       item["folderName"] = item["folderName"]
     })
-    let target;
-    target = ExcelData.find(item => item.name === brandNameMatch);
+    let target = ExcelData.find(item => item.name === brandNameMatch);
     fileId = msg.document.file_id;
-    checkPictureFolder()
     try {
+      checkPictureFolder()
+      await editConfig(brandNameMatch, _, _, true)
+
       const fileData = await bot.getFile(fileId);
       await bot.sendMessage(chatId, '已收到圖片！！圖片處理中....');
       await bot.sendMessage(chatId, `folderName：${target.folderName}`);
       // 將處理檔案的函數推入佇列
-      fileQueue.push(() => processFile(fileData, target));
+      fileQueue.push(() => processFile(fileData, target, 2));
       // 檢查是否有其他檔案在處理中，如果沒有，開始處理佇列
       if (fileQueue.length === 1) {
         await processQueue();
@@ -110,21 +110,18 @@ bot.on('document', async (msg) => {
   const regex = /建置/;
   if (regex.test(messageText)) {
     // brandName
-    const brandNameRegex = /包网(.*?)棋牌/g;
-    const brandNameMatch = brandNameRegex.exec(messageText)[1];
+    const brandNameMatch = /包网(.*?)棋牌/g.exec(messageText)[1];
     // androidUrl
-    const androidRegex = /安卓：(.*?)\n/g;
-    const androidMatch = androidRegex.exec(messageText)[1];
+    const androidMatch = /安卓：(.*?)\n/g.exec(messageText)[1];
     // iosUrl
-    const iosRegex = /IOS：(.*?)$/gi;
-    const iosMatch = iosRegex.exec(messageText)[1];
+    const iosMatch = /IOS：(.*?)$/gi.exec(messageText)[1];
     console.log(brandNameMatch);
     await addConfig(brandNameMatch, androidMatch, iosMatch);
 
     const fileData = await bot.getFile(fileId);
     await bot.sendMessage(chatId, '----新增：收到圖片----');
     // 將處理檔案的函數推入佇列
-    fileQueue.push(() => processFile(fileData, target));
+    fileQueue.push(() => processFile(fileData, target, 1));
     // 檢查是否有其他檔案在處理中，如果沒有，開始處理佇列
     if (fileQueue.length === 1) {
       await processQueue();
@@ -161,7 +158,14 @@ const { uncompress } = require('./compressFile');
 const { findDirectoryWithFileName } = require('./findDirtory')
 
 
-async function processFile(fileData, target) {
+async function processFile(fileData, target, status) {
+  /* enum
+    enum status {
+      addConf = 1,
+      editPicConf
+    } 
+  */
+
   await bot.downloadFile(fileId, directoryPath);
   await uncompress(fileData.file_path.split('/')[1], target);
   let path = await findDirectoryWithFileName(directoryPath, fileNames)
@@ -176,7 +180,8 @@ async function processFile(fileData, target) {
   console.log("創建完畢")
   moveFolderfile(path, destinationPath)
   await clearAndRemoveDirectory('./picture')
-  pushFileToRep('yy修改123123')
+  let outPutMessage = status === 1 ? `【${target.name}】圖片修改` :`【${target.name}】新增落地頁`
+  pushFileToRep(outPutMessage)
 }
 
 
