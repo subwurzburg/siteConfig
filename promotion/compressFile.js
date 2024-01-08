@@ -28,7 +28,7 @@ function compress(target, path) {
     });
 }
 
-function uncompress(dataName, target) {
+function uncompress(dataName) {
   return new Promise((res, rej) => {
     const options = { zipFileNameEncoding: 'UTF-8' }; // 指定字符編碼為UTF-8
     compressing.zip.uncompress(`./picture/${dataName}`, `./picture/`, options).then(() => {

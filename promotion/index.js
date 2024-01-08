@@ -83,7 +83,7 @@ bot.on('document', async (msg) => {
         item["folderName"] = item["folderName"]
       })
       let target = ExcelData.find(item => item.name === brandNameMatch);
-      fileId = msg.document.file_id;
+      let fileId = msg.document.file_id;
       checkPictureFolder()
       await editConfig(brandNameMatch, "", "", true)
 
@@ -115,10 +115,14 @@ bot.on('document', async (msg) => {
       // iosUrl
       const iosMatch = /IOS：(.*?)$/gi.exec(messageText)[1];
       await addConfig(brandNameMatch, androidMatch, iosMatch);
-
+      
+      let fileId = msg.document.file_id;
       const fileData = await bot.getFile(fileId);
       await bot.sendMessage(chatId, '----- 新增：收到圖片 -----');
       // 將處理檔案的函數推入佇列
+      let target = {
+        name: brandNameMatch,
+      }
       fileQueue.push(() => processFile(fileData, target, 1));
       // 檢查是否有其他檔案在處理中，如果沒有，開始處理佇列
       if (fileQueue.length === 1) {
@@ -171,7 +175,7 @@ async function processFile(fileData, target, status) {
     } 
   */
   await bot.downloadFile(fileId, directoryPath);
-  await uncompress(fileData.file_path.split('/')[1], target);
+  await uncompress(fileData.file_path.split('/')[1]);
   let path = await findDirectoryWithFileName(directoryPath, fileNames)
   path = `./${path}`
   await changePicName(path);
