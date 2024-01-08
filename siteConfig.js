@@ -1,4 +1,4 @@
-const jsVer = "3.0.235";
+const jsVer = "3.0.236";
 module.exports = [
     {
         guanwangHtmlModule: "module1",
@@ -1701,7 +1701,7 @@ module.exports = [
         jsModule: "module1",
         title: "凌志",
         siteName: "lingzhi",
-        imgDate: "240103",
+        imgDate: "240108",
         jsVersion: jsVer,
         DLName: "download_lingzhi",
         DLNameOl: "download_lingzhi_ol",
