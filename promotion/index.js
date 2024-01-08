@@ -186,7 +186,7 @@ async function processFile(fileData, target, status) {
   console.log("創建完畢")
   moveFolderfile(path, destinationPath)
   await clearAndRemoveDirectory('./picture')
-  let outPutMessage = status === 1 ? `【${target.name}】圖片修改` :`【${target.name}】新增落地頁`
+  let outPutMessage = status === 1 ? `【${target.name}】新增落地頁` :`【${target.name}】圖片修改`
   pushFileToRep(outPutMessage)
 }
 
