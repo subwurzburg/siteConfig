@@ -86,7 +86,7 @@ bot.on('document', async (msg) => {
     fileId = msg.document.file_id;
     try {
       checkPictureFolder()
-      await editConfig(brandNameMatch, _, _, true)
+      await editConfig(brandNameMatch, "", "", true)
 
       const fileData = await bot.getFile(fileId);
       await bot.sendMessage(chatId, '已收到圖片！！圖片處理中....');
