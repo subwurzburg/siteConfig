@@ -176,7 +176,7 @@ async function processFile(fileData, target) {
   console.log("創建完畢")
   moveFolderfile(path, destinationPath)
   await clearAndRemoveDirectory('./picture')
-  pushFileToRep('yy修改')
+  pushFileToRep('yy修改123123')
 }
 
 
