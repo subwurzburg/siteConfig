@@ -7,7 +7,7 @@ const repoPath = '../';
 const git = simpleGit(repoPath);
 
 // 执行 Git add 操作
-function pushFileToRep(msg) {
+async function pushFileToRep(msg) {
   git.add('.')
     .then(() => {
       console.log('Git add 成功。');

@@ -5,6 +5,7 @@ const token = '6935420858:AAHEvRScKx45vxy-UnfdCaXClBC9MRJymow' // lazy_bot
 const fs = require('fs');
 const fsExtra = require('fs-extra');
 const { pushFileToRep } = require("../git")
+const { build } = require('./build')
 
 
 const xlsx = require('xlsx');
@@ -153,8 +154,9 @@ bot.onText(/替换/, async (msg) => {
   const iosMatch = iosRegex.exec(messageText);
   const iosUrl = iosMatch ? iosMatch[1] : ""
     await editConfig(brandNameMatch, androidUrl, iosUrl)
+    await build();
     let outPutMessage = `【${brandNameMatch}】 修改鏈結`
-    pushFileToRep(outPutMessage);
+    await pushFileToRep(outPutMessage);
     await bot.sendMessage(chatId, '----- 已完成 -----');
   } catch (error) {
     console.log(error)
@@ -188,6 +190,7 @@ async function processFile(fileData, target, status) {
   console.log("創建完畢")
   moveFolderfile(path, destinationPath)
   await clearAndRemoveDirectory('./picture')
+  await build();
   let outPutMessage = status === 1 ? `【${target.name}】新增落地頁` :`【${target.name}】圖片修改`
   pushFileToRep(outPutMessage)
 }
